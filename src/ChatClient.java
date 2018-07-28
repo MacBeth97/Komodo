@@ -17,12 +17,14 @@ public class ChatClient {
 	static JTextField textField = new JTextField(40);
 	static JLabel blankLabel = new JLabel("      ");
 	static JButton sendButton = new JButton("Send");
+	static JLabel userName = new JLabel("               ");
 	static BufferedReader in;
 	static PrintWriter out;
 
 	ChatClient() {
 		
 		menu.setLayout(new FlowLayout());
+		menu.add(userName);
 		menu.add(new JScrollPane(chatField));
 		menu.add(blankLabel);
 		menu.add(textField);
@@ -81,9 +83,11 @@ public class ChatClient {
 				
 				out.println(user);
 				
-			} else if(str.equals("Congrats you have a Name")) {
+			} else if(str.startsWith("YOURNAME")) {
 				
 				textField.setEditable(true);
+				//Ignores string YOURNAME and isolates userName only
+				userName.setText("You are logged in as: " + str.substring(8));
 				
 			} else {
 				
@@ -92,8 +96,7 @@ public class ChatClient {
 			}
 			
 		}
-				
-		
+	
 	}
 	
 	public static void main(String[] args) {

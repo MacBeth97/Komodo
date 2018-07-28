@@ -3,9 +3,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-
 
 public class ChatServer {
 	
@@ -44,11 +45,21 @@ public class ChatServer {
 class ConversationHandler extends Thread {
 	Socket sockySock;
 	BufferedReader in;
+	//Writes data to sockets output stream
 	PrintWriter out;
 	String user;
+	//Writes data to message log file
+	PrintWriter msgLogs;
+	//Writes data character by character to file
+	static FileWriter fw;
+	static BufferedWriter bw;
 	
 	public ConversationHandler(Socket sockySock) throws IOException {
 		this.sockySock = sockySock;
+
+		fw = new FileWriter("C:\\Users\\Bruce\\Desktop\\Komodo\\ChatServer-logs.txt", true);
+		bw = new BufferedWriter(fw);
+		msgLogs = new PrintWriter(bw, true);
 	}
 	
 	//Contains Thread Logic
@@ -60,7 +71,7 @@ class ConversationHandler extends Thread {
 			out = new PrintWriter(sockySock.getOutputStream(), true);
 			
 			int count = 0;
-			//Will wait for a user to enter a unique name
+			
 			while (true) {
 				if (count > 0) {
 					out.println("Sorry, this name has been taken!");
@@ -82,7 +93,9 @@ class ConversationHandler extends Thread {
 				count++;
 			}
 			
-			out.println("Congrats you have a Name");
+			//Send name from server to client
+			//Appends name to accepted string
+			out.println("YOURNAME" + user);
 			ChatServer.printWriters.add(out);
 			
 			//Reads message from a client and sends to all other clients
@@ -92,6 +105,8 @@ class ConversationHandler extends Thread {
 				if (message == null) {
 					return;
 				}
+				
+				msgLogs.println(user + ": " + message);
 				
 				for (PrintWriter writer : ChatServer.printWriters) {
 					//This sends the message
