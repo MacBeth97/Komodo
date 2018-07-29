@@ -28,8 +28,9 @@ public class ChatServer {
 			
 			System.out.println("Waiting for client ...");
 			ServerSocket ss = new ServerSocket(8000);
-			IP = InetAddress.getLocalHost();
-			System.out.println("IP of my system is := "+IP.getHostAddress());
+			//Socket 
+			//IP = InetAddress.getLocalHost();
+			//System.out.println("IP of my system is := "+IP.getHostAddress());
 			
 			while(true) 
 			{
