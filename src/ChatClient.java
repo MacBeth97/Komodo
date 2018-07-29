@@ -87,6 +87,7 @@ public class ChatClient {
 			} else if(str.startsWith("YOURNAME")) {
 				
 				textField.setEditable(true);
+				
 				//Ignores string YOURNAME and isolates userName only
 				userName.setText("You are logged in as: " + str.substring(8));
 				
@@ -114,14 +115,12 @@ public class ChatClient {
 }
 
 //Action Listener interface
-//Listen for action events, such as click of button
-//Code we want to execute upon button click
 class Listener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		//Sends data =to client output stream
+		//Sends data to client output stream
 		ChatClient.out.println(ChatClient.textField.getText());
 		ChatClient.textField.setText("");
 		

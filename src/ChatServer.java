@@ -28,14 +28,18 @@ public class ChatServer {
 			
 			System.out.println("Waiting for client ...");
 			ServerSocket ss = new ServerSocket(8000);
-			//Socket 
-			//IP = InetAddress.getLocalHost();
-			//System.out.println("IP of my system is := "+IP.getHostAddress());
 			
 			while(true) 
 			{
 				Socket sock = ss.accept();
 				System.out.println("Connection Established");
+				
+				for (String line : userNames) {
+					System.out.println("Currently connected users are: ");
+					System.out.println(userNames);
+					System.out.println("===============================");
+				}
+				
 				ConversationHandler handler = new ConversationHandler(sock);
 				handler.start();
 			}
@@ -43,7 +47,6 @@ public class ChatServer {
 			
 		}
 		catch (Exception e){
-//			System.out.println("Connection Terminated");
 			e.printStackTrace();
 		}
 		
@@ -103,7 +106,6 @@ class ConversationHandler extends Thread {
 			}
 			
 			//Send name from server to client
-			//Appends name to accepted string
 			out.println("YOURNAME" + user);
 			ChatServer.printWriters.add(out);
 			
@@ -129,10 +131,15 @@ class ConversationHandler extends Thread {
 			
 			JOptionPane.showMessageDialog(null, "Connection Terminated by User: " + user);
 			
-//			out.println(alert);
+			//Remove disconnected user from ArrayList
+			(ChatServer.userNames).remove(user);
 			
+			for (String usersLeft : ChatServer.userNames) {
+				System.out.println("Users still connected: ");
+				System.out.println(ChatServer.userNames);
+				System.out.println("=======================");
+			}
 			System.out.println("Connection Terminated by User: " + user);
-//			System.out.println(e);
 		}
 	}
 }
