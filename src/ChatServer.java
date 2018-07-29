@@ -1,7 +1,11 @@
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -12,6 +16,7 @@ public class ChatServer {
 	
 	//Stores UserNames of all clients connected to server
 	static ArrayList<String> userNames = new ArrayList<String>();
+	static InetAddress IP;
 	
 	//Assigns PrintWriters to each user that connects to the server, preventing server from freezing each time a user sends text
 	//PrintWriter objects of all the clients
@@ -23,6 +28,8 @@ public class ChatServer {
 			
 			System.out.println("Waiting for client ...");
 			ServerSocket ss = new ServerSocket(8000);
+			IP = InetAddress.getLocalHost();
+			System.out.println("IP of my system is := "+IP.getHostAddress());
 			
 			while(true) 
 			{
@@ -35,6 +42,7 @@ public class ChatServer {
 			
 		}
 		catch (Exception e){
+//			System.out.println("Connection Terminated");
 			e.printStackTrace();
 		}
 		
@@ -86,7 +94,7 @@ class ConversationHandler extends Thread {
 				}
 				
 				//If name doesn't exist, add userName to the ArrayList
-				if (!ChatServer.userNames.contains(user)) {
+			if (!ChatServer.userNames.contains(user)) {
 					ChatServer.userNames.add(user);
 					break;
 				}
@@ -117,7 +125,13 @@ class ConversationHandler extends Thread {
 		}
 		catch (Exception e) 
 		{
-			System.out.println(e);
+			
+			JOptionPane.showMessageDialog(null, "Connection Terminated by User: " + user);
+			
+//			out.println(alert);
+			
+			System.out.println("Connection Terminated by User: " + user);
+//			System.out.println(e);
 		}
 	}
 }
