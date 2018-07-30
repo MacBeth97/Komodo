@@ -21,6 +21,8 @@ public class ChatClient {
 	static JLabel userName = new JLabel("               ");
 	static BufferedReader in;
 	static PrintWriter out;
+	static User[] userArray = new User[50];
+
 
 	ChatClient() {
 		
@@ -74,6 +76,7 @@ public class ChatClient {
 						JOptionPane.PLAIN_MESSAGE);
 				
 				out.println(user);
+				out.println(ipAddress);
 			} else if(str.equals("Sorry, this name has been taken!")) {
 				
 				String user = JOptionPane.showInputDialog(
@@ -83,6 +86,7 @@ public class ChatClient {
 						JOptionPane.WARNING_MESSAGE);
 				
 				out.println(user);
+				out.println(ipAddress);
 				
 			} else if(str.startsWith("YOURNAME")) {
 				
@@ -106,6 +110,8 @@ public class ChatClient {
 		try {
 			ChatClient client = new ChatClient();
 			client.startChat();
+			//Display menu = new Display();
+			//menu.setVisible(true);
 		}
 		catch (Exception e){
 			e.printStackTrace();
