@@ -144,12 +144,18 @@ class ConversationHandler extends Thread {
 			JOptionPane.showMessageDialog(null, "Connection Terminated by User: " + user);
 			
 			//Remove disconnected user from ArrayList
-			User toRemove = new User(user, ip);
+			//User toRemove = new User(user, ip);
+
+			for (User toRemove: ChatServer.userArray) {
+				if (toRemove.name == user && ChatServer.userArray.size() > 1) {
+					(ChatServer.userArray).remove(toRemove);
+					
+				}
+			}
 			//ChatServer.userArray.remove(ChatServer.userArray.get());
-			(ChatServer.userNames).remove(toRemove);
-			
+		
+			System.out.println("Users still connected: ");
 			for (User usersLeft : ChatServer.userArray) {
-				System.out.println("Users still connected: ");
 				System.out.println(usersLeft.name);
 				System.out.println("=======================");
 			}
