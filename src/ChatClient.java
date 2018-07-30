@@ -104,8 +104,10 @@ public class ChatClient {
 	public static void main(String[] args) {
 		
 		try {
-			ChatClient client = new ChatClient();
-			client.startChat();
+			//ChatClient client = new ChatClient();
+			//client.startChat();
+			Display menu = new Display();
+			menu.setVisible(true);
 		}
 		catch (Exception e){
 			e.printStackTrace();
