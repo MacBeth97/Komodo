@@ -5,7 +5,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -16,6 +15,8 @@ public class ChatServer {
 	
 	//Stores UserNames of all clients connected to server
 	static ArrayList<String> userNames = new ArrayList<String>();
+	//static User[] userArray = new User[50];
+	static ArrayList<User> userArray = new ArrayList<User>();
 	static InetAddress IP;
 	
 	//Assigns PrintWriters to each user that connects to the server, preventing server from freezing each time a user sends text
@@ -60,6 +61,7 @@ class ConversationHandler extends Thread {
 	//Writes data to sockets output stream
 	PrintWriter out;
 	String user;
+	String ip;
 	//Writes data to message log file
 	PrintWriter msgLogs;
 	//Writes data character by character to file
@@ -92,16 +94,25 @@ class ConversationHandler extends Thread {
 				}
 				
 				user = in.readLine();
+				ip = in.readLine();
+				//System.out.println(ip);
+				
 				
 				if (user == null) {
 					return;
 				}
 				
 				//If name doesn't exist, add userName to the ArrayList
-			if (!ChatServer.userNames.contains(user)) {
-					ChatServer.userNames.add(user);
+//			if (!ChatServer.userNames.contains(user)) {
+//					ChatServer.userNames.add(user);
+//					break;
+//				}
+				if (!ChatServer.userArray.contains(user)) {
+					User toAdd = new User(user, ip);				
+					ChatServer.userArray.add(toAdd);
 					break;
 				}
+		
 				count++;
 			}
 			
@@ -125,6 +136,7 @@ class ConversationHandler extends Thread {
 				}
 			}
 			
+			
 		}
 		catch (Exception e) 
 		{
@@ -132,11 +144,13 @@ class ConversationHandler extends Thread {
 			JOptionPane.showMessageDialog(null, "Connection Terminated by User: " + user);
 			
 			//Remove disconnected user from ArrayList
-			(ChatServer.userNames).remove(user);
+			User toRemove = new User(user, ip);
+			//ChatServer.userArray.remove(ChatServer.userArray.get());
+			(ChatServer.userNames).remove(toRemove);
 			
-			for (String usersLeft : ChatServer.userNames) {
+			for (User usersLeft : ChatServer.userArray) {
 				System.out.println("Users still connected: ");
-				System.out.println(ChatServer.userNames);
+				System.out.println(usersLeft.name);
 				System.out.println("=======================");
 			}
 			System.out.println("Connection Terminated by User: " + user);
