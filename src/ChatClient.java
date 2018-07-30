@@ -50,13 +50,13 @@ public class ChatClient {
 		
 		//Requires user to input there ip address to allow for connection identification
 		//Returns value entered by client
-//		String ipAddress = JOptionPane.showInputDialog(
-//				menu,
-//				"Enter IP Address:",
-//				"IP Address Required!",
-//				JOptionPane.PLAIN_MESSAGE);
-//		
-		Socket sock = new Socket(InetAddress.getLocalHost(), 8000);
+		String ipAddress = JOptionPane.showInputDialog(
+				menu,
+				"Enter Server IP Address:",
+				"IP Address Required!",
+				JOptionPane.PLAIN_MESSAGE);
+		
+		Socket sock = new Socket(ipAddress, 8000);
 		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 		out = new PrintWriter(sock.getOutputStream(), true);
 		
