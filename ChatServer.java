@@ -72,9 +72,9 @@ class ConversationHandler extends Thread {
 	public ConversationHandler(Socket sockySock) throws IOException {
 		this.sockySock = sockySock;
 
-		fw = new FileWriter("C:\\Users\\Bruce\\Desktop\\Komodo\\ChatServer-logs.txt", true);
-		bw = new BufferedWriter(fw);
-		msgLogs = new PrintWriter(bw, true);
+//		fw = new FileWriter("C:\\Users\\Bruce\\Desktop\\Komodo\\ChatServer-logs.txt", true);
+//		bw = new BufferedWriter(fw);
+//		msgLogs = new PrintWriter(bw, true);
 	}
 	
 	//Contains Thread Logic
