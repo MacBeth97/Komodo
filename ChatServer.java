@@ -48,7 +48,8 @@ public class ChatServer {
 			
 		}
 		catch (Exception e){
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "PLEASE NOTE: Server Terminated, messages will no longer send!");
+//			e.printStackTrace();
 		}
 		
 	}
