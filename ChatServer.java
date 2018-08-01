@@ -101,20 +101,28 @@ class ConversationHandler extends Thread {
 					return;
 				}
 				
+				User newUser = new User(user, ip);
+				//System.out.println("Username: " + user);
+				//System.out.println(ChatServer.userNames.contains(user));
 				//If name doesn't exist, add userName to the ArrayList
-				if (!ChatServer.userArray.contains(user)) {
+				if (!ChatServer.userNames.contains(user)) {
+					System.out.println("Adding" + user);
 					User toAdd = new User(user, ip);				
 					ChatServer.userArray.add(toAdd);
+					ChatServer.userNames.add(user);
 //					Display.userListField.setText(user);
 					break;
 				}
-				Display.userListField.setText("");
-				if (ChatServer.userArray.size() > 0) {
-					for (User onlineUser: ChatServer.userArray) {
-						String userToAdd = onlineUser.name;
-						Display.userListField.append(userToAdd);
-					}
-				}
+				//Display.userListField.setText("");
+			//	System.out.println("Why");
+//				if (ChatServer.userArray.size() > 0) {
+//					
+//					for (User onlineUser: ChatServer.userArray) {
+//						String userToAdd = onlineUser.name;
+//						Display.userListField.append(userToAdd);
+//						System.out.println(userToAdd);
+//					}
+//				}
 				count++;
 			}
 			
