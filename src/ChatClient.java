@@ -12,126 +12,93 @@ import java.io.PrintWriter;
 import javax.swing.*;
 
 public class ChatClient {
-	
-	static JFrame menu = new JFrame("Chat App");
-	static JTextArea chatField = new JTextArea(22, 40);
-	static JTextField textField = new JTextField(40);
-	static JLabel blankLabel = new JLabel("      ");
-	static JButton sendButton = new JButton("Send");
-	static JLabel userName = new JLabel("               ");
+
 	static BufferedReader in;
 	static PrintWriter out;
 	static User[] userArray = new User[50];
+	static String user;
 
-
-	ChatClient() {
-		
-		menu.setLayout(new FlowLayout());
-		menu.add(userName);
-		menu.add(new JScrollPane(chatField));
-		menu.add(blankLabel);
-		menu.add(textField);
-		menu.add(sendButton);
-		
-		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		menu.setSize(475, 500);
-		menu.setVisible(true);
-		
-		textField.setEditable(false);
-		chatField.setEditable(false);
-		
-		//Listens for when user clicks button
-		sendButton.addActionListener(new Listener());
-		//Listens for when user clicks Enter
-		textField.addActionListener(new Listener());
-		
-	}
 	
-	//Takes input from the users
-	void startChat() throws Exception {
-		
-		//Requires user to input there ip address to allow for connection identification
-		//Returns value entered by client
-		String ipAddress = JOptionPane.showInputDialog(
-				menu,
-				"Enter Server IP Address:",
-				"IP Address Required!",
-				JOptionPane.PLAIN_MESSAGE);
-		
-		Socket sock = new Socket(ipAddress, 8000);
-		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-		out = new PrintWriter(sock.getOutputStream(), true);
-		
-		
-		//Takes the user input and sends it to the server
-		while (true) 
-		{
-			
-			String str = in.readLine();
-			if (str.equals("Name is Required!")) {
-				String user = JOptionPane.showInputDialog(
-						menu,
-						"Enter a unique Name:",
-						"Name Required!",
-						JOptionPane.PLAIN_MESSAGE);
-				
-				out.println(user);
-				out.println(ipAddress);
-			} else if(str.equals("Sorry, this name has been taken!")) {
-				
-				String user = JOptionPane.showInputDialog(
-						menu,
-						"Enter another Name:",
-						"Name Already Exists!",
-						JOptionPane.WARNING_MESSAGE);
-				
-				out.println(user);
-				out.println(ipAddress);
-				
-			} else if(str.startsWith("YOURNAME")) {
-				
-				textField.setEditable(true);
-				
-				//Ignores string YOURNAME and isolates userName only
-				userName.setText("You are logged in as: " + str.substring(8));
-				
-			} else {
-				
-				chatField.append(str + "\n");
-				
-			}
-			
-		}
-	
-	}
-	
+//Takes input from the users
 	public static void main(String[] args) {
 		
 		try {
-			ChatClient client = new ChatClient();
-			client.startChat();
-			//Display menu = new Display();
-			//menu.setVisible(true);
+			//ChatClient client = new ChatClient();
+			//client.startChat();
+			Display menu = new Display();
+			menu.setVisible(true);
+			//client.startChat();
+			startTheChat();
 		}
 		catch (Exception e){
 			e.printStackTrace();
 		}
 		
 	}
-}
-
-//Action Listener interface
-class Listener implements ActionListener {
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-		//Sends data to client output stream
-		ChatClient.out.println(ChatClient.textField.getText());
-		ChatClient.textField.setText("");
-		
-	}
 	
+	public static void startTheChat() throws Exception {
+		//Requires user to input there ip address to allow for connection identification
+				//Returns value entered by client
+				String ipAddress = JOptionPane.showInputDialog(
+						null,
+						"Enter Server IP Address:",
+						"IP Address Required!",
+						JOptionPane.PLAIN_MESSAGE);
+				
+				Socket sock = new Socket(ipAddress, 8000);
+				in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+				out = new PrintWriter(sock.getOutputStream(), true);
+				
+				
+				//Takes the user input and sends it to the server
+				while (true) 
+				{
+					
+					String str = in.readLine();
+					if (str.equals("Name is Required!")) {
+						 user = JOptionPane.showInputDialog(
+								null,
+								"Enter a unique Name:",
+								"Name Required!",
+								JOptionPane.PLAIN_MESSAGE);
+						
+						out.println(user);
+						out.println(ipAddress);
+					} else if(str.equals("Sorry, this name has been taken!")) {
+						
+						 user = JOptionPane.showInputDialog(
+								null,
+								"Enter another Name:",
+								"Name Already Exists!",
+								JOptionPane.WARNING_MESSAGE);
+						
+						out.println(user);
+						out.println(ipAddress);
+						
+					} else if(str.startsWith("YOURNAME")) {
+						
+						//textField.setEditable(true);
+						
+						//Ignores string YOURNAME and isolates userName only
+						Display.userListField.setText("");
+						if (userArray.length > 0) {
+							System.out.println("Heroiin");
+							for (User onlineUser: userArray) {
+								String userToAdd = onlineUser.name;
+								Display.userListField.append(userToAdd);
+							}
+						}
+						Display.userListField.append(user);
+						//Display.userListField.append(user);
+						Display.displayUsername.setText("You are logged in as: " + str.substring(8));
+						//userName.setText("You are logged in as: " + str.substring(8));
+						
+					} else {
+						
+						Display.chatField.append(str + "\n");
+						
+					}
+					
+				}
+		}
 }
-
-

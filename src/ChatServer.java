@@ -35,9 +35,9 @@ public class ChatServer {
 				Socket sock = ss.accept();
 				System.out.println("Connection Established");
 				
-				for (String line : userNames) {
+				for (User line : userArray) {
 					System.out.println("Currently connected users are: ");
-					System.out.println(userNames);
+					System.out.println(userArray);
 					System.out.println("===============================");
 				}
 				
@@ -95,24 +95,25 @@ class ConversationHandler extends Thread {
 				
 				user = in.readLine();
 				ip = in.readLine();
-				//System.out.println(ip);
-				
 				
 				if (user == null) {
 					return;
 				}
 				
 				//If name doesn't exist, add userName to the ArrayList
-//			if (!ChatServer.userNames.contains(user)) {
-//					ChatServer.userNames.add(user);
-//					break;
-//				}
 				if (!ChatServer.userArray.contains(user)) {
 					User toAdd = new User(user, ip);				
 					ChatServer.userArray.add(toAdd);
+//					Display.userListField.setText(user);
 					break;
 				}
-		
+				Display.userListField.setText("");
+				if (ChatClient.userArray.length > 0) {
+					for (User onlineUser: ChatClient.userArray) {
+						String userToAdd = onlineUser.name;
+						Display.userListField.append(userToAdd);
+					}
+				}
 				count++;
 			}
 			
@@ -134,8 +135,7 @@ class ConversationHandler extends Thread {
 					//This sends the message
 					writer.println(user + ": " + message);
 				}
-			}
-			
+			}			
 			
 		}
 		catch (Exception e) 
@@ -146,8 +146,7 @@ class ConversationHandler extends Thread {
 			//Remove disconnected user from ArrayList
 			User toRemove = new User(user, ip);
 			//ChatServer.userArray.remove(ChatServer.userArray.get());
-			(ChatServer.userNames).remove(toRemove);
-			
+			(ChatServer.userNames).remove(toRemove);		
 			for (User usersLeft : ChatServer.userArray) {
 				System.out.println("Users still connected: ");
 				System.out.println(usersLeft.name);
