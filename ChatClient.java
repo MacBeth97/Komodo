@@ -81,9 +81,9 @@ public class ChatClient {
 						
 						//Ignores string YOURNAME and isolates userName only
 						Display.userListField.setText("");
-						if (userArray.length > 0) {
+						if (ChatServer.userArray.size() > 0) {
 							System.out.println("Heroiin");
-							for (User onlineUser: userArray) {
+							for (User onlineUser: ChatServer.userArray) {
 								String userToAdd = onlineUser.name;
 								Display.userListField.append(userToAdd);
 							}

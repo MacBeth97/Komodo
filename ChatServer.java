@@ -37,7 +37,7 @@ public class ChatServer {
 				
 				for (User line : userArray) {
 					System.out.println("Currently connected users are: ");
-					System.out.println(userArray);
+					System.out.println(line.name);
 					System.out.println("===============================");
 				}
 				
@@ -109,8 +109,8 @@ class ConversationHandler extends Thread {
 					break;
 				}
 				Display.userListField.setText("");
-				if (ChatClient.userArray.length > 0) {
-					for (User onlineUser: ChatClient.userArray) {
+				if (ChatServer.userArray.size() > 0) {
+					for (User onlineUser: ChatServer.userArray) {
 						String userToAdd = onlineUser.name;
 						Display.userListField.append(userToAdd);
 					}
