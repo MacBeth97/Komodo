@@ -103,7 +103,6 @@ class ConversationHandler extends Thread {
 				
 				//If name doesn't exist, add userName to the ArrayList
 				if (!ChatServer.userNames.contains(user)) {
-					System.out.println("Adding" + user);
 					User toAdd = new User(user, ip);				
 					ChatServer.userArray.add(toAdd);
 					ChatServer.userNames.add(user);
