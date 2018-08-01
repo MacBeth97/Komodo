@@ -142,7 +142,7 @@ class ConversationHandler extends Thread {
 			for (User toRemove: ChatServer.userArray) {
 				if (toRemove.name == user && ChatServer.userArray.size() > 1) {
 					(ChatServer.userArray).remove(toRemove);
-					
+					break;
 				}
 			}
 			//ChatServer.userArray.remove(ChatServer.userArray.get());
