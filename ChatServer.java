@@ -101,28 +101,14 @@ class ConversationHandler extends Thread {
 					return;
 				}
 				
-				User newUser = new User(user, ip);
-				//System.out.println("Username: " + user);
-				//System.out.println(ChatServer.userNames.contains(user));
 				//If name doesn't exist, add userName to the ArrayList
 				if (!ChatServer.userNames.contains(user)) {
 					System.out.println("Adding" + user);
 					User toAdd = new User(user, ip);				
 					ChatServer.userArray.add(toAdd);
 					ChatServer.userNames.add(user);
-//					Display.userListField.setText(user);
 					break;
 				}
-				//Display.userListField.setText("");
-			//	System.out.println("Why");
-//				if (ChatServer.userArray.size() > 0) {
-//					
-//					for (User onlineUser: ChatServer.userArray) {
-//						String userToAdd = onlineUser.name;
-//						Display.userListField.append(userToAdd);
-//						System.out.println(userToAdd);
-//					}
-//				}
 				count++;
 			}
 			
@@ -153,7 +139,6 @@ class ConversationHandler extends Thread {
 			JOptionPane.showMessageDialog(null, "Connection Terminated by User: " + user);
 			
 			//Remove disconnected user from ArrayList
-			//User toRemove = new User(user, ip);
 
 			for (User toRemove: ChatServer.userArray) {
 				if (toRemove.name == user && ChatServer.userArray.size() > 1) {
