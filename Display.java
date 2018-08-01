@@ -183,7 +183,6 @@ public class Display extends javax.swing.JFrame {
 		//this.messageBar.setText("");
 		//Sends data to client output stream
 		String message = Display.messageBar.getText();
-		System.out.println("Hello");
 		ChatClient.out.println(message);
 		//Display.chatField.setText(ChatClient.user + ": " + message);
 		//ChatClient.textField.setText("");
@@ -203,8 +202,7 @@ public class Display extends javax.swing.JFrame {
     }                                            
 
     private void displayUsernameActionPerformed(java.awt.event.ActionEvent evt) {                                                
-        // TODO add your handling code here:
-    	System.out.println("Hurro");
+        // TODO add your handling code here:s
         displayUsername.setVisible(true);
     }                                               
 

@@ -72,9 +72,9 @@ class ConversationHandler extends Thread {
 	public ConversationHandler(Socket sockySock) throws IOException {
 		this.sockySock = sockySock;
 
-//		fw = new FileWriter("C:\\Users\\Bruce\\Desktop\\Komodo\\ChatServer-logs.txt", true);
-//		bw = new BufferedWriter(fw);
-//		msgLogs = new PrintWriter(bw, true);
+		fw = new FileWriter("./ChatServer-logs.txt", true);
+		bw = new BufferedWriter(fw);
+		msgLogs = new PrintWriter(bw, true);
 	}
 	
 	//Contains Thread Logic
@@ -116,9 +116,9 @@ class ConversationHandler extends Thread {
 			ChatServer.printWriters.add(out);
 			
 			//Reads message from a client and sends to all other clients
+			//System.out.println("Before send message loop");
 			while (true) {
 				String message = in.readLine();
-				
 				if (message == null) {
 					return;
 				}
@@ -142,6 +142,7 @@ class ConversationHandler extends Thread {
 			for (User toRemove: ChatServer.userArray) {
 				if (toRemove.name == user && ChatServer.userArray.size() > 1) {
 					(ChatServer.userArray).remove(toRemove);
+					//ChatServer.userNames.remove(user);
 					break;
 				}
 			}
@@ -149,11 +150,11 @@ class ConversationHandler extends Thread {
 
 			//(ChatServer.userNames).remove(toRemove);		
 
-			System.out.println("Users still connected: ");
-			for (User usersLeft : ChatServer.userArray) {
-				System.out.println(usersLeft.name);
-				System.out.println("=======================");
-			}
+//			System.out.println("Users still connected: ");
+//			for (User usersLeft : ChatServer.userArray) {
+//				System.out.println(usersLeft.name);
+//				System.out.println("=======================");
+//			}
 			System.out.println("Connection Terminated by User: " + user);
 		}
 	}
