@@ -1,4 +1,10 @@
+
+.project
+.classpath
+/.DS_Store
+/.gitignore
 /ChatClient.class
+/ChatServer-logs.txt
 /ChatServer.class
 /Client.class
 /ConversationHandler.class
@@ -8,7 +14,8 @@
 /Display$4.class
 /Display$5.class
 /Display$6.class
+/Display$7.class
 /Display.class
-/Listener.class
+/README.md
 /Server.class
 /User.class
