@@ -116,6 +116,8 @@ class ConversationHandler extends Thread {
 			
 			//Send name from server to client
 			out.write("YOURNAME" + user);
+			out.newLine();
+			out.flush();
 			ChatServer.buffWriter.add(out);
 			
 			//Reads message from a client and sends to all other clients
@@ -130,7 +132,9 @@ class ConversationHandler extends Thread {
 				
 				for (BufferedWriter writer : ChatServer.buffWriter) {
 					//This sends the message
-					writer.write(user + ": " + message  +"\n");
+					writer.write(user + ": " + message);
+					writer.newLine();
+					writer.flush();
 				}
 			}			
 			

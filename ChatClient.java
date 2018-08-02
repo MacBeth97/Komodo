@@ -33,7 +33,8 @@ public class ChatClient {
 			startTheChat();
 		}
 		catch (Exception e){
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "PLEASE NOTE: Server Terminated, messages will no longer send!");
+//			e.printStackTrace();
 		}
 		
 	}
@@ -99,7 +100,7 @@ public class ChatClient {
 						}
 						Display.userListField.append(user);
 						//Display.userListField.append(user);
-						Display.displayUsername.setText("You are logged in as: " + str.substring(8));
+						Display.displayUsername.setText("You are logged in as: " + str.substring(8) + "\n");
 						//userName.setText("You are logged in as: " + str.substring(8));
 						
 					} else {

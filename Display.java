@@ -187,6 +187,7 @@ public class Display extends javax.swing.JFrame {
 		String message = Display.messageBar.getText();
 		try {
 			ChatClient.out.write(message);
+			ChatClient.out.newLine();
 			ChatClient.out.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
