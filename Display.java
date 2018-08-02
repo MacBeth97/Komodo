@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 public class Display extends javax.swing.JFrame {
 
     /**
@@ -183,7 +185,13 @@ public class Display extends javax.swing.JFrame {
 		//this.messageBar.setText("");
 		//Sends data to client output stream
 		String message = Display.messageBar.getText();
-		ChatClient.out.println(message);
+		try {
+			ChatClient.out.write(message);
+			ChatClient.out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//Display.chatField.setText(ChatClient.user + ": " + message);
 		//ChatClient.textField.setText("");
 		Display.messageBar.setText("");		

@@ -7,14 +7,16 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import javax.swing.*;
 
 public class ChatClient {
 
 	static BufferedReader in;
-	static PrintWriter out;
+	static BufferedWriter out;
 	static User[] userArray = new User[50];
 	static String user;
 
@@ -47,7 +49,7 @@ public class ChatClient {
 				
 				Socket sock = new Socket(ipAddress, 8000);
 				in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-				out = new PrintWriter(sock.getOutputStream(), true);
+				out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 				
 				
 				//Takes the user input and sends it to the server
@@ -62,8 +64,12 @@ public class ChatClient {
 								"Name Required!",
 								JOptionPane.PLAIN_MESSAGE);
 						
-						out.println(user);
-						out.println(ipAddress);
+						out.write(user);
+						out.newLine();
+						out.write(ipAddress);
+						out.newLine();
+						out.flush();
+						
 					} else if(str.equals("Sorry, this name has been taken!")) {
 						
 						 user = JOptionPane.showInputDialog(
@@ -72,8 +78,11 @@ public class ChatClient {
 								"Name Already Exists!",
 								JOptionPane.WARNING_MESSAGE);
 						
-						out.println(user);
-						out.println(ipAddress);
+						out.write(user);
+						out.newLine();
+						out.write(ipAddress);
+						out.newLine();
+						out.flush();
 						
 					} else if(str.startsWith("YOURNAME")) {
 						

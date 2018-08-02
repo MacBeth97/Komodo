@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
 public class ChatServer {
@@ -21,7 +22,7 @@ public class ChatServer {
 	
 	//Assigns PrintWriters to each user that connects to the server, preventing server from freezing each time a user sends text
 	//PrintWriter objects of all the clients
-	static ArrayList<PrintWriter> printWriters = new ArrayList<PrintWriter>();
+	static ArrayList<BufferedWriter> buffWriter = new ArrayList<BufferedWriter>();
 
 	public static void main(String[] args) {
 		
@@ -60,7 +61,7 @@ class ConversationHandler extends Thread {
 	Socket sockySock;
 	BufferedReader in;
 	//Writes data to sockets output stream
-	PrintWriter out;
+	BufferedWriter out;
 	String user;
 	String ip;
 	//Writes data to message log file
@@ -83,15 +84,17 @@ class ConversationHandler extends Thread {
 		try 
 		{
 			in = new BufferedReader(new InputStreamReader(sockySock.getInputStream()));
-			out = new PrintWriter(sockySock.getOutputStream(), true);
+			out = new BufferedWriter(new OutputStreamWriter(sockySock.getOutputStream()));
 			
 			int count = 0;
 			
 			while (true) {
 				if (count > 0) {
-					out.println("Sorry, this name has been taken!");
+					out.write("Sorry, this name has been taken!\n");
+					out.flush();
 				} else {
-					out.println("Name is Required!");
+					out.write("Name is Required!\n");
+					out.flush();
 				}
 				
 				user = in.readLine();
@@ -112,8 +115,8 @@ class ConversationHandler extends Thread {
 			}
 			
 			//Send name from server to client
-			out.println("YOURNAME" + user);
-			ChatServer.printWriters.add(out);
+			out.write("YOURNAME" + user);
+			ChatServer.buffWriter.add(out);
 			
 			//Reads message from a client and sends to all other clients
 			//System.out.println("Before send message loop");
@@ -125,9 +128,9 @@ class ConversationHandler extends Thread {
 				
 				msgLogs.println(user + ": " + message);
 				
-				for (PrintWriter writer : ChatServer.printWriters) {
+				for (BufferedWriter writer : ChatServer.buffWriter) {
 					//This sends the message
-					writer.println(user + ": " + message);
+					writer.write(user + ": " + message  +"\n");
 				}
 			}			
 			
@@ -135,7 +138,7 @@ class ConversationHandler extends Thread {
 		catch (Exception e) 
 		{
 			
-			JOptionPane.showMessageDialog(null, "Connection Terminated by User: " + user);
+			JOptionPane.showMessageDialog(null, "Connection Terminated by User: " + user + "\n");
 			
 			//Remove disconnected user from ArrayList
 
