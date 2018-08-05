@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.net.Socket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -26,17 +28,28 @@ public class ChatClient {
 	static ArrayList<User> userArray = new ArrayList<User>();
 	static User newUser;
 	static String user;
-	static int i = 0;
-
+	static login loginMenu;
+	static Display menu;
+	
 	public static void main(String[] args) {
 		try {
-			Display menu = new Display();
-			menu.setVisible(true);
 			startTheChat();
+
+			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "PLEASE NOTE: Server Terminated, messages will no longer send!");
 		}
 	}
+	
+    public void update(Observable o, Object arg) {
+        final Object finalArg = arg;
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                Display.userListField.append(finalArg.toString());
+                Display.userListField.append("\n");
+            }
+        });
+    }
 
 	public static void startTheChat() throws Exception {
 		// Requires user to input there ip address to allow for connection
@@ -44,22 +57,27 @@ public class ChatClient {
 		// Returns value entered by client
 		String ipAddress = JOptionPane.showInputDialog(null, "Enter Server IP Address:", "IP Address Required!",
 				JOptionPane.PLAIN_MESSAGE);
-
+		
 		Socket sock = new Socket(ipAddress, 8000);
 		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 		out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 		userObjectOutput = new ObjectOutputStream(sock.getOutputStream());
 		userObjectInput = new ObjectInputStream(sock.getInputStream());
 
+		
 		// Takes the user input and sends it to the server
 		while (true) {
 			String str = in.readLine();
+			System.out.println(str);
 			if (str.equals("Name is Required!")) {
-				user = JOptionPane.showInputDialog(null, 
-						"Enter a unique Name:", 
-						"Name Required!",
-						JOptionPane.PLAIN_MESSAGE);
-
+//				user = JOptionPane.showInputDialog(null, 
+//						"Enter a unique Name:", 
+//						"Name Required!",
+//						JOptionPane.PLAIN_MESSAGE);
+				loginMenu = new login();
+				loginMenu.setVisible(true);
+				user = in.readLine();
+				System.out.println("GETTING SUMMIN: " + user);
 				out.write(user);
 				out.newLine();
 				out.write(ipAddress);
@@ -82,6 +100,8 @@ public class ChatClient {
 			} else if (str.startsWith("YOURNAME")) {
 
 				// Ignores string YOURNAME and isolates userName only
+				menu = new Display();
+				menu.setVisible(true);
 				Display.userListField.setText("");
 				userArray = (ArrayList<User>) userObjectInput.readObject();
 
@@ -93,7 +113,11 @@ public class ChatClient {
 				}
 				Display.displayUsername.setText("You are logged in as: " + str.substring(8) + "\n");
 
-			} else {
+			} else if (str.startsWith("@")) {
+				
+			}
+			
+			else {
 
 				Display.chatField.append(str + "\n");
 
@@ -101,4 +125,5 @@ public class ChatClient {
 
 		}
 	}
+
 }

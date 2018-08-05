@@ -1,12 +1,15 @@
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Display extends javax.swing.JFrame {
+public class Display extends javax.swing.JFrame implements Observer {
 
     /**
      * Creates new form Display
      */
     public Display() {
         initComponents();
+        
     }
 
     /**
@@ -97,7 +100,7 @@ public class Display extends javax.swing.JFrame {
         displayUsername.setBackground(new java.awt.Color(118, 211, 180));
         displayUsername.setFont(new java.awt.Font("Calibri", 2, 16)); // NOI18N
         displayUsername.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        displayUsername.setText("You are now logged in as:");
+        displayUsername.setText("");
         displayUsername.setBorder(null);
         displayUsername.setOpaque(true);
 
@@ -239,4 +242,9 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JButton sendButton;
     public static javax.swing.JTextArea userListField;
     // End of variables declaration                   
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
+	}
 }
