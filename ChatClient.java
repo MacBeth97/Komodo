@@ -102,19 +102,15 @@ public class ChatClient {
 				if (ChatClient.userArray.size() > 0) {
 					for (User onlineUser : ChatClient.userArray) {
 						String userToAdd = onlineUser.name;
-						//Display.userListField.append(userToAdd + "\n");
 					}
 				}
 				
 				Display.displayUsername.setText("You are logged in as: " + str.substring(8) + "\n");
 
 			} else if (str.startsWith("update")) {
-//				System.out.println("Hello" + str.substring(6));
 				String recvd = str.substring(6);
-				//System.out.println(recvd);
 				String[] users = new String[50];
 				users = recvd.split(",");
-				
 				Display.userListField.setText("");
 				for (String name : users) {
 					if (name.startsWith("[") && name.endsWith("]")) {
@@ -127,15 +123,10 @@ public class ChatClient {
 						Display.userListField.append(name + "\n");
 					}
 				}
-				
-				//Display.userListField.append(recvd.toString() + "\n");
-//				userArray = (ArrayList<User>) userObjectInput.readObject();
-//				System.out.println("User Array of size: " + userArray.size());
-			
+
 			} else {
 				System.out.println(str);
 				Display.chatField.append(str + "\n");
-				//System.out.println("At the end of the while in Client");
 			}
 
 		}

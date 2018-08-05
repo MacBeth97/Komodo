@@ -123,19 +123,14 @@ class ConversationHandler extends Thread {
 			ChatServer.buffWriter.add(out);
 
 			for (BufferedWriter writer : ChatServer.buffWriter) {
-				System.out.println("Still here");
 				writer.write("update" + ChatServer.userNames);
 				writer.newLine();
-				writer.flush();
-				//userObjectOutput.writeObject(ChatServer.userArray);	
-				//userObjectOutput.flush();
-				
+				writer.flush();			
 			}
 			
 		
 			// Reads message from a client and sends to all other clients
 			while (true) {
-				System.out.println("HERE MINYdjSA");
 				String message = in.readLine();
 				if (message == null) {
 					return;
