@@ -22,123 +22,83 @@ public class ChatClient {
 	static BufferedWriter out;
 	static ObjectInputStream userObjectInput;
 	static ObjectOutputStream userObjectOutput;
-	
-//	static User[] userArray = new User[50];
+
 	static ArrayList<User> userArray = new ArrayList<User>();
 	static User newUser;
 	static String user;
 	static int i = 0;
 
-	
-//Takes input from the users
 	public static void main(String[] args) {
-		
 		try {
-			//ChatClient client = new ChatClient();
-			//client.startChat();
 			Display menu = new Display();
 			menu.setVisible(true);
-			//client.startChat();
 			startTheChat();
-		}
-		catch (Exception e){
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "PLEASE NOTE: Server Terminated, messages will no longer send!");
-//			e.printStackTrace();
 		}
-		
 	}
-	
+
 	public static void startTheChat() throws Exception {
-		//Requires user to input there ip address to allow for connection identification
-				//Returns value entered by client
-				String ipAddress = JOptionPane.showInputDialog(
-						null,
-						"Enter Server IP Address:",
-						"IP Address Required!",
+		// Requires user to input there ip address to allow for connection
+		// identification
+		// Returns value entered by client
+		String ipAddress = JOptionPane.showInputDialog(null, "Enter Server IP Address:", "IP Address Required!",
+				JOptionPane.PLAIN_MESSAGE);
+
+		Socket sock = new Socket(ipAddress, 8000);
+		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+		out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+		userObjectOutput = new ObjectOutputStream(sock.getOutputStream());
+		userObjectInput = new ObjectInputStream(sock.getInputStream());
+
+		// Takes the user input and sends it to the server
+		while (true) {
+			String str = in.readLine();
+			if (str.equals("Name is Required!")) {
+				user = JOptionPane.showInputDialog(null, 
+						"Enter a unique Name:", 
+						"Name Required!",
 						JOptionPane.PLAIN_MESSAGE);
-				
-				Socket sock = new Socket(ipAddress, 8000);
-				in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-				out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
-				userObjectOutput = new ObjectOutputStream(sock.getOutputStream());
-				userObjectInput = new ObjectInputStream(sock.getInputStream());
-				
-								
-				
-				//Takes the user input and sends it to the server
-				while (true) 
-				{
-					
-					String str = in.readLine();
-					if (str.equals("Name is Required!")) {
-						 user = JOptionPane.showInputDialog(
-								null,
-								"Enter a unique Name:",
-								"Name Required!",
-								JOptionPane.PLAIN_MESSAGE);
-						
-						out.write(user);
-						out.newLine();
-						out.write(ipAddress);
-						out.newLine();
-						out.flush();
-						
-					} else if(str.equals("Sorry, this name has been taken!")) {
-						
-						 user = JOptionPane.showInputDialog(
-								null,
-								"Enter another Name:",
-								"Name Already Exists!",
-								JOptionPane.WARNING_MESSAGE);
 
-						
-						out.write(user);
-						out.newLine();
-						out.write(ipAddress);
-						out.newLine();
-						out.flush();
-						
-					} else if(str.startsWith("YOURNAME")) {
-						
-						//textField.setEditable(true);
-						
-						//Ignores string YOURNAME and isolates userName only
-						Display.userListField.setText("");
-						
-						
-//						
+				out.write(user);
+				out.newLine();
+				out.write(ipAddress);
+				out.newLine();
+				out.flush();
 
-						
-//						newUser = (User)userObjectInput.readObject();
-						userArray = (ArrayList<User>)userObjectInput.readObject();
-					
-//						System.out.println(newUser);
-//						ChatClient.userArray.add(i, newUser);
-//						i++;
-						
-						System.out.println(ChatClient.userArray.size());
-						
-						if (ChatClient.userArray.size() > 0) {
-							//System.out.println("Heroiin");
-							for (User onlineUser: ChatClient.userArray) {
-								String userToAdd = onlineUser.name;
-								Display.userListField.append(userToAdd + "\n");
-//								Display.userListField.revalidate();
-//								Display.userListField.repaint();
-							}
-						}
-						//Display.userListField.append(user);
-						//Display.userListField.append(user);
-						Display.displayUsername.setText("You are logged in as: " + str.substring(8) + "\n");
-						//userName.setText("You are logged in as: " + str.substring(8));
-						
-					} else {
-						
-						Display.chatField.append(str + "\n");
-						//Display.userListField.append("    " + "\n");
-						
+			} else if (str.equals("Sorry, this name has been taken!")) {
+
+				user = JOptionPane.showInputDialog(null, 
+						"Enter another Name:", 
+						"Name Already Exists!",
+						JOptionPane.WARNING_MESSAGE);
+
+				out.write(user);
+				out.newLine();
+				out.write(ipAddress);
+				out.newLine();
+				out.flush();
+
+			} else if (str.startsWith("YOURNAME")) {
+
+				// Ignores string YOURNAME and isolates userName only
+				Display.userListField.setText("");
+				userArray = (ArrayList<User>) userObjectInput.readObject();
+
+				if (ChatClient.userArray.size() > 0) {
+					for (User onlineUser : ChatClient.userArray) {
+						String userToAdd = onlineUser.name;
+						Display.userListField.append(userToAdd + "\n");
 					}
-					
 				}
+				Display.displayUsername.setText("You are logged in as: " + str.substring(8) + "\n");
+
+			} else {
+
+				Display.chatField.append(str + "\n");
+
+			}
+
 		}
+	}
 }
