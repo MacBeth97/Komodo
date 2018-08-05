@@ -29,13 +29,13 @@ public class ChatClient {
 	static User newUser;
 	static String user;
 	static login loginMenu;
-	static Display menu;
+	static boolean wait = true;
 	
 	public static void main(String[] args) {
 		try {
+			Display menu = new Display();
+			menu.setVisible(true);
 			startTheChat();
-
-			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "PLEASE NOTE: Server Terminated, messages will no longer send!");
 		}
@@ -57,27 +57,23 @@ public class ChatClient {
 		// Returns value entered by client
 		String ipAddress = JOptionPane.showInputDialog(null, "Enter Server IP Address:", "IP Address Required!",
 				JOptionPane.PLAIN_MESSAGE);
-		
+
 		Socket sock = new Socket(ipAddress, 8000);
 		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 		out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 		userObjectOutput = new ObjectOutputStream(sock.getOutputStream());
 		userObjectInput = new ObjectInputStream(sock.getInputStream());
 
-		
+
 		// Takes the user input and sends it to the server
 		while (true) {
 			String str = in.readLine();
-			System.out.println(str);
 			if (str.equals("Name is Required!")) {
-//				user = JOptionPane.showInputDialog(null, 
-//						"Enter a unique Name:", 
-//						"Name Required!",
-//						JOptionPane.PLAIN_MESSAGE);
-				loginMenu = new login();
-				loginMenu.setVisible(true);
-				user = in.readLine();
-				System.out.println("GETTING SUMMIN: " + user);
+				user = JOptionPane.showInputDialog(null, 
+						"Enter a unique Name:", 
+						"Name Required!",
+						JOptionPane.PLAIN_MESSAGE);
+				
 				out.write(user);
 				out.newLine();
 				out.write(ipAddress);
@@ -100,27 +96,46 @@ public class ChatClient {
 			} else if (str.startsWith("YOURNAME")) {
 
 				// Ignores string YOURNAME and isolates userName only
-				menu = new Display();
-				menu.setVisible(true);
 				Display.userListField.setText("");
 				userArray = (ArrayList<User>) userObjectInput.readObject();
 
 				if (ChatClient.userArray.size() > 0) {
 					for (User onlineUser : ChatClient.userArray) {
 						String userToAdd = onlineUser.name;
-						Display.userListField.append(userToAdd + "\n");
+						//Display.userListField.append(userToAdd + "\n");
 					}
 				}
+				
 				Display.displayUsername.setText("You are logged in as: " + str.substring(8) + "\n");
 
-			} else if (str.startsWith("@")) {
+			} else if (str.startsWith("update")) {
+//				System.out.println("Hello" + str.substring(6));
+				String recvd = str.substring(6);
+				//System.out.println(recvd);
+				String[] users = new String[50];
+				users = recvd.split(",");
 				
-			}
+				Display.userListField.setText("");
+				for (String name : users) {
+					if (name.startsWith("[") && name.endsWith("]")) {
+						Display.userListField.append(name.substring(1, name.length() - 1) + "\n");
+					} else if (name.endsWith("]")) {
+						Display.userListField.append(name.substring(0, name.length() - 1) + "\n");
+					} else if (name.startsWith("[")){
+						Display.userListField.append(name.substring(1) + "\n");
+					} else {
+						Display.userListField.append(name + "\n");
+					}
+				}
+				
+				//Display.userListField.append(recvd.toString() + "\n");
+//				userArray = (ArrayList<User>) userObjectInput.readObject();
+//				System.out.println("User Array of size: " + userArray.size());
 			
-			else {
-
+			} else {
+				System.out.println(str);
 				Display.chatField.append(str + "\n");
-
+				//System.out.println("At the end of the while in Client");
 			}
 
 		}

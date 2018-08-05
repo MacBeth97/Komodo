@@ -98,12 +98,13 @@ public class login extends javax.swing.JFrame {
     }                                             
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) throws IOException {                                            
-        String username = usernameField.getText();
-        System.out.println("inlogin " + username + "\n");
-        ChatClient.out.write(username);
-        ChatClient.out.newLine();
-        ChatClient.out.flush();
-        ChatClient.loginMenu.dispose();
+        //String username = usernameField.getText();
+//        System.out.println("inlogin " + username + "\n");
+//        ChatClient.out.write(username);
+//        ChatClient.out.newLine();
+//        ChatClient.out.flush();
+    	ChatClient.wait = false;
+        //ChatClient.loginMenu.dispose();
     }                                           
 
     /**

@@ -184,6 +184,7 @@ public class Display extends javax.swing.JFrame implements Observer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
         messageBar.setText("");
 
     }                                          

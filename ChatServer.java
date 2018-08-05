@@ -3,6 +3,8 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Observable;
+
 import javax.swing.JOptionPane;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -120,8 +122,20 @@ class ConversationHandler extends Thread {
 			userObjectOutput.flush();
 			ChatServer.buffWriter.add(out);
 
+			for (BufferedWriter writer : ChatServer.buffWriter) {
+				System.out.println("Still here");
+				writer.write("update" + ChatServer.userNames);
+				writer.newLine();
+				writer.flush();
+				//userObjectOutput.writeObject(ChatServer.userArray);	
+				//userObjectOutput.flush();
+				
+			}
+			
+		
 			// Reads message from a client and sends to all other clients
 			while (true) {
+				System.out.println("HERE MINYdjSA");
 				String message = in.readLine();
 				if (message == null) {
 					return;
