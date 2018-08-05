@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.net.Socket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -9,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import javax.swing.*;
@@ -17,8 +20,14 @@ public class ChatClient {
 
 	static BufferedReader in;
 	static BufferedWriter out;
-	static User[] userArray = new User[50];
+	static ObjectInputStream userObjectInput;
+	static ObjectOutputStream userObjectOutput;
+	
+//	static User[] userArray = new User[50];
+	static ArrayList<User> userArray = new ArrayList<User>();
+	static User newUser;
 	static String user;
+	static int i = 0;
 
 	
 //Takes input from the users
@@ -51,7 +60,10 @@ public class ChatClient {
 				Socket sock = new Socket(ipAddress, 8000);
 				in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 				out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+				userObjectOutput = new ObjectOutputStream(sock.getOutputStream());
+				userObjectInput = new ObjectInputStream(sock.getInputStream());
 				
+								
 				
 				//Takes the user input and sends it to the server
 				while (true) 
@@ -78,6 +90,7 @@ public class ChatClient {
 								"Enter another Name:",
 								"Name Already Exists!",
 								JOptionPane.WARNING_MESSAGE);
+
 						
 						out.write(user);
 						out.newLine();
@@ -91,14 +104,30 @@ public class ChatClient {
 						
 						//Ignores string YOURNAME and isolates userName only
 						Display.userListField.setText("");
-						if (ChatServer.userArray.size() > 0) {
-							System.out.println("Heroiin");
-							for (User onlineUser: ChatServer.userArray) {
+						
+						
+//						
+
+						
+//						newUser = (User)userObjectInput.readObject();
+						userArray = (ArrayList<User>)userObjectInput.readObject();
+					
+//						System.out.println(newUser);
+//						ChatClient.userArray.add(i, newUser);
+//						i++;
+						
+						System.out.println(ChatClient.userArray.size());
+						
+						if (ChatClient.userArray.size() > 0) {
+							//System.out.println("Heroiin");
+							for (User onlineUser: ChatClient.userArray) {
 								String userToAdd = onlineUser.name;
-								Display.userListField.append(userToAdd);
+								Display.userListField.append(userToAdd + "\n");
+//								Display.userListField.revalidate();
+//								Display.userListField.repaint();
 							}
 						}
-						Display.userListField.append(user);
+						//Display.userListField.append(user);
 						//Display.userListField.append(user);
 						Display.displayUsername.setText("You are logged in as: " + str.substring(8) + "\n");
 						//userName.setText("You are logged in as: " + str.substring(8));
@@ -106,6 +135,7 @@ public class ChatClient {
 					} else {
 						
 						Display.chatField.append(str + "\n");
+						//Display.userListField.append("    " + "\n");
 						
 					}
 					
