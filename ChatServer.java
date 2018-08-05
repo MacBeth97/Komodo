@@ -9,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
@@ -62,8 +64,12 @@ class ConversationHandler extends Thread {
 	BufferedReader in;
 	//Writes data to sockets output stream
 	BufferedWriter out;
+	ObjectInputStream userObjectInput;
+	ObjectOutputStream userObjectOutput;
 	String user;
 	String ip;
+	User newUser;
+	User toAdd;
 	//Writes data to message log file
 	PrintWriter msgLogs;
 	//Writes data character by character to file
@@ -85,6 +91,8 @@ class ConversationHandler extends Thread {
 		{
 			in = new BufferedReader(new InputStreamReader(sockySock.getInputStream()));
 			out = new BufferedWriter(new OutputStreamWriter(sockySock.getOutputStream()));
+			userObjectInput = new ObjectInputStream(sockySock.getInputStream());
+			userObjectOutput = new ObjectOutputStream(sockySock.getOutputStream());
 			
 			int count = 0;
 			
@@ -106,9 +114,13 @@ class ConversationHandler extends Thread {
 				
 				//If name doesn't exist, add userName to the ArrayList
 				if (!ChatServer.userNames.contains(user)) {
-					User toAdd = new User(user, ip);				
+					toAdd = new User(user, ip);
 					ChatServer.userArray.add(toAdd);
 					ChatServer.userNames.add(user);
+//					out.write(toAdd);
+//					newUser = (User)userObjectInput.readObject();
+					//out.write("Added user \n");
+					//out.flush();
 					break;
 				}
 				count++;
@@ -118,10 +130,16 @@ class ConversationHandler extends Thread {
 			out.write("YOURNAME" + user);
 			out.newLine();
 			out.flush();
+			userObjectOutput.writeObject(ChatServer.userArray);
+			userObjectOutput.flush();
 			ChatServer.buffWriter.add(out);
+			
+//			Display.userListField.revalidate();
+//			Display.userListField.repaint();
 			
 			//Reads message from a client and sends to all other clients
 			//System.out.println("Before send message loop");
+			
 			while (true) {
 				String message = in.readLine();
 				if (message == null) {
