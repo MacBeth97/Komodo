@@ -151,12 +151,12 @@ class ConversationHandler extends Thread {
 					//send to both users...
 					for (userBuffer bu: ChatServer.userBuffers) {
 						if (bu.getName().equals(privUser)) {
-							bu.getWriter().write(user + ": "+ message);
+							bu.getWriter().write("PM from " + user + ": "+ message);
 							bu.getWriter().newLine();
 							bu.getWriter().flush();
 						}
 						if (bu.getName().equals(user)) {
-							bu.getWriter().write(user+ ": "+ message);
+							bu.getWriter().write("PM to " + user+ ": "+ message);
 							bu.getWriter().newLine();
 							bu.getWriter().flush();
 						}
