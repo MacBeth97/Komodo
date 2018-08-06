@@ -18,6 +18,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import javax.swing.*;
 
+//update chat clien tarray in while
 public class ChatClient {
 
 	static BufferedReader in;
@@ -28,9 +29,7 @@ public class ChatClient {
 	static ArrayList<User> userArray = new ArrayList<User>();
 	static User newUser;
 	static String user;
-	static login loginMenu;
-	static boolean wait = true;
-	
+	static privateChat[] whispers = new privateChat[50];
 	public static void main(String[] args) {
 		try {
 			Display menu = new Display();
@@ -41,15 +40,6 @@ public class ChatClient {
 		}
 	}
 	
-    public void update(Observable o, Object arg) {
-        final Object finalArg = arg;
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                Display.userListField.append(finalArg.toString());
-                Display.userListField.append("\n");
-            }
-        });
-    }
 
 	public static void startTheChat() throws Exception {
 		// Requires user to input there ip address to allow for connection
@@ -63,7 +53,7 @@ public class ChatClient {
 		out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 		userObjectOutput = new ObjectOutputStream(sock.getOutputStream());
 		userObjectInput = new ObjectInputStream(sock.getInputStream());
-
+		int index = 0;
 
 		// Takes the user input and sends it to the server
 		while (true) {
@@ -98,12 +88,6 @@ public class ChatClient {
 				// Ignores string YOURNAME and isolates userName only
 				Display.userListField.setText("");
 				userArray = (ArrayList<User>) userObjectInput.readObject();
-
-				if (ChatClient.userArray.size() > 0) {
-					for (User onlineUser : ChatClient.userArray) {
-						String userToAdd = onlineUser.name;
-					}
-				}
 				
 				Display.displayUsername.setText("You are logged in as: " + str.substring(8) + "\n");
 
@@ -124,8 +108,23 @@ public class ChatClient {
 					}
 				}
 
-			} else {
-				System.out.println(str);
+			} else if (str.startsWith("@")) {
+				//open chat menu if doesn't already exist 
+				//send msg so that it displays on both users
+				// -> find user's chat menu in array 
+				String privMsg = str.substring(1);
+				String[] splitMsg = privMsg.split(":");
+				String privUser = splitMsg[0];
+
+				str = splitMsg[1];
+				
+				for (User toSend : ChatServer.userArray) {
+					if (privUser.equals(toSend.name)) {
+						String privIP = toSend.getIP();
+						Socket temp = new Socket(privIP, 8000);
+					}
+				}
+			}	else {
 				Display.chatField.append(str + "\n");
 			}
 

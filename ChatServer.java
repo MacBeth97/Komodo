@@ -4,6 +4,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import java.io.BufferedReader;
@@ -19,12 +20,16 @@ public class ChatServer {
 
 	static ArrayList<String> userNames = new ArrayList<String>();
 	static ArrayList<User> userArray = new ArrayList<User>();
+	static Vector<ConversationHandler> activeClients = new Vector<>();
 	static InetAddress IP;
 
 	// Assigns PrintWriters to each user that connects to the server, preventing
 	// server from freezing each time a user sends text
 	// PrintWriter objects of all the clients
 	static ArrayList<BufferedWriter> buffWriter = new ArrayList<BufferedWriter>();
+	static ArrayList<userBuffer> userBuffers = new ArrayList<userBuffer>();
+	// client counter
+	static int i = 0;
 
 	public static void main(String[] args) {
 
@@ -43,8 +48,10 @@ public class ChatServer {
 					System.out.println("===============================");
 				}
 
-				ConversationHandler handler = new ConversationHandler(sock);
+				ConversationHandler handler = new ConversationHandler(sock, "client" + i);
+				activeClients.add(handler);
 				handler.start();
+				i++;
 			}
 
 		} catch (Exception e) {
@@ -62,6 +69,7 @@ class ConversationHandler extends Thread {
 	ObjectInputStream userObjectInput;
 	ObjectOutputStream userObjectOutput;
 	String user;
+	String myName;
 	String ip;
 	User newUser;
 	User toAdd;
@@ -69,9 +77,9 @@ class ConversationHandler extends Thread {
 	static FileWriter fw;
 	static BufferedWriter bw;
 
-	public ConversationHandler(Socket sockySock) throws IOException {
+	public ConversationHandler(Socket sockySock, String myName) throws IOException {
 		this.sockySock = sockySock;
-
+		this.myName = myName;
 		fw = new FileWriter("./ChatServer-logs.txt", true);
 		bw = new BufferedWriter(fw);
 		msgLogs = new PrintWriter(bw, true);
@@ -121,30 +129,49 @@ class ConversationHandler extends Thread {
 			userObjectOutput.writeObject(ChatServer.userArray);
 			userObjectOutput.flush();
 			ChatServer.buffWriter.add(out);
-
+			userBuffer ub = new userBuffer(user, out);
+			ChatServer.userBuffers.add(ub);
+						
 			for (BufferedWriter writer : ChatServer.buffWriter) {
 				writer.write("update" + ChatServer.userNames);
 				writer.newLine();
-				writer.flush();			
+				writer.flush();
 			}
-			
-		
+
 			// Reads message from a client and sends to all other clients
 			while (true) {
 				String message = in.readLine();
+
 				if (message == null) {
 					return;
 				}
 
-				msgLogs.println(user + ": " + message);
+				if (message.startsWith("@")) {
+					String privMsg = message.substring(1);
+					String[] splitMsg = privMsg.split(":");
+					String privUser = splitMsg[0];
 
-				for (BufferedWriter writer : ChatServer.buffWriter) {
-					writer.write(user + ": " + message);
-					writer.newLine();
-					writer.flush();
+					message = splitMsg[1];
+					msgLogs.println(privUser + ": " + message);
+
+					//send to both users...
+					for (userBuffer bu: ChatServer.userBuffers) {
+						System.out.println("In for loop of buffers" + bu.getName());
+						if (bu.getName().equals(privUser)) {
+							bu.getWriter().write(privUser+ ": "+ message);
+							bu.getWriter().newLine();
+							bu.getWriter().flush();
+						}
+					}
+				} else {
+					msgLogs.println(user + ": " + message);
+					for (BufferedWriter writer : ChatServer.buffWriter) {
+						writer.write(user + ": " + message);
+						writer.newLine();
+						writer.flush();
+					}
 				}
 			}
-
 		} catch (Exception e) {
 
 			JOptionPane.showMessageDialog(null, "Connection Terminated by User: " + user + "\n");
@@ -169,5 +196,5 @@ class ConversationHandler extends Thread {
 			System.out.println("Connection Terminated by User: " + user);
 		}
 	}
-	
+
 }
