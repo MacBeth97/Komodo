@@ -19,3 +19,5 @@
 /README.md
 /Server.class
 /User.class
+/SocketServer.class
+/SocketClient.class

@@ -1,10 +1,15 @@
-public class Display extends javax.swing.JFrame {
+import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
+
+public class Display extends javax.swing.JFrame implements Observer {
 
     /**
      * Creates new form Display
      */
     public Display() {
         initComponents();
+        
     }
 
     /**
@@ -23,17 +28,20 @@ public class Display extends javax.swing.JFrame {
         sendButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         chatField = new javax.swing.JTextArea();
-        komodoLabel = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         userListField = new javax.swing.JTextArea();
-        komodoLabel1 = new javax.swing.JTextField();
-        komodoLabel2 = new javax.swing.JTextField();
+        onlineUsersLabel = new javax.swing.JTextField();
+        chatHistoryLabel = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
         displayUsername = new javax.swing.JTextField();
 
         jPasswordField1.setText("jPasswordField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Komodo");
         setBackground(new java.awt.Color(175, 238, 213));
+        setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jPanel1.setBackground(new java.awt.Color(175, 238, 213));
 
@@ -47,164 +55,143 @@ public class Display extends javax.swing.JFrame {
         sendButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sendButtonActionPerformed(evt);
-                displayUsernameActionPerformed(evt);
             }
         });
 
+        chatField.setEditable(false);
         chatField.setColumns(20);
         chatField.setRows(5);
-        chatField.setEditable(false);
         jScrollPane1.setViewportView(chatField);
-
-        komodoLabel.setEditable(false);
-        komodoLabel.setBackground(new java.awt.Color(175, 238, 213));
-        komodoLabel.setFont(new java.awt.Font("Helvetica", 1, 16)); // NOI18N
-        komodoLabel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        komodoLabel.setText("komodo");
-        komodoLabel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                komodoLabelActionPerformed(evt);
-            }
-        });
 
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
+        userListField.setEditable(false);
         userListField.setColumns(20);
         userListField.setRows(5);
-        userListField.setEditable(false);
         jScrollPane2.setViewportView(userListField);
 
-        komodoLabel1.setEditable(false);
-        komodoLabel1.setBackground(new java.awt.Color(175, 238, 213));
-        komodoLabel1.setFont(new java.awt.Font("Helvetica", 0, 14)); // NOI18N
-        komodoLabel1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        komodoLabel1.setText("Online Users");
-        komodoLabel1.setBorder(null);
-        komodoLabel1.addActionListener(new java.awt.event.ActionListener() {
+        onlineUsersLabel.setEditable(false);
+        onlineUsersLabel.setBackground(new java.awt.Color(175, 238, 213));
+        onlineUsersLabel.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
+        onlineUsersLabel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        onlineUsersLabel.setText("Online Users");
+        onlineUsersLabel.setBorder(null);
+        onlineUsersLabel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                komodoLabel1ActionPerformed(evt);
+                onlineUsersLabelActionPerformed(evt);
             }
         });
 
-        komodoLabel2.setEditable(false);
-        komodoLabel2.setBackground(new java.awt.Color(175, 238, 213));
-        komodoLabel2.setFont(new java.awt.Font("Helvetica", 0, 14)); // NOI18N
-        komodoLabel2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        komodoLabel2.setText("Chat History");
-        komodoLabel2.setBorder(null);
-        komodoLabel2.addActionListener(new java.awt.event.ActionListener() {
+        chatHistoryLabel.setEditable(false);
+        chatHistoryLabel.setBackground(new java.awt.Color(175, 238, 213));
+        chatHistoryLabel.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
+        chatHistoryLabel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        chatHistoryLabel.setText("Chat History");
+        chatHistoryLabel.setBorder(null);
+        chatHistoryLabel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                komodoLabel2ActionPerformed(evt);
+                chatHistoryLabelActionPerformed(evt);
             }
         });
+
+        jLabel1.setIcon(new javax.swing.ImageIcon("./FINALKOMLOGOEVER.png")); // NOI18N
 
         displayUsername.setEditable(false);
-        displayUsername.setBackground(new java.awt.Color(175, 238, 213));
-        displayUsername.setFont(new java.awt.Font("Helvetica", 2, 14)); // NOI18N
+        displayUsername.setBackground(new java.awt.Color(118, 211, 180));
+        displayUsername.setFont(new java.awt.Font("Calibri", 2, 16)); // NOI18N
         displayUsername.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        displayUsername.setText("         ");
-        displayUsername.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                displayUsernameActionPerformed(evt);
-            }
-        });
+        displayUsername.setText("");
+        displayUsername.setBorder(null);
+        displayUsername.setOpaque(true);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(displayUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 669, Short.MAX_VALUE)
-                    .addComponent(komodoLabel)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addGap(6, 6, 6)
-                            .addComponent(komodoLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(komodoLabel2))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(16, 16, 16)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(messageBar)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(sendButton))
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(onlineUsersLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(55, 55, 55)
+                        .addComponent(chatHistoryLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(messageBar, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(sendButton))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(displayUsername, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(komodoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(displayUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(komodoLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(komodoLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(chatHistoryLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(onlineUsersLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
+                .addGap(21, 21, 21)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(messageBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sendButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(messageBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(sendButton))
-                        .addGap(12, 12, 12))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(21, Short.MAX_VALUE))))
+                .addComponent(displayUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>                        
 
-    private void komodoLabelActionPerformed(java.awt.event.ActionEvent evt) {                                            
+    private void chatHistoryLabelActionPerformed(java.awt.event.ActionEvent evt) {                                                 
         // TODO add your handling code here:
-    }                                           
+    }                                                
+
+    private void onlineUsersLabelActionPerformed(java.awt.event.ActionEvent evt) {                                                 
+        // TODO add your handling code here:
+    }                                                
 
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        //this.chatField.setText((messageBar.getText()));
-		//this.messageBar.setText("");
-		//Sends data to client output stream
-		String message = Display.messageBar.getText();
-		ChatClient.out.println(message);
-		//Display.chatField.setText(ChatClient.user + ": " + message);
-		//ChatClient.textField.setText("");
-		Display.messageBar.setText("");		
-    }                                          
+        //Sends data to client output stream
+        String message = messageBar.getText();
+        try {
+            ChatClient.out.write(message);
+            ChatClient.out.newLine();
+            ChatClient.out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        messageBar.setText("");
 
-    private void komodoLabel1ActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO add your handling code here:
-    }                                            
+    }                                          
 
     private void messageBarActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
     }                                          
-
-    private void komodoLabel2ActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO add your handling code here:
-    }                                            
-
-    private void displayUsernameActionPerformed(java.awt.event.ActionEvent evt) {                                                
-        // TODO add your handling code here:s
-        displayUsername.setVisible(true);
-    }                                               
 
     /**
      * @param args the command line arguments
@@ -243,17 +230,22 @@ public class Display extends javax.swing.JFrame {
 
     // Variables declaration - do not modify                     
     public static javax.swing.JTextArea chatField;
+    public static javax.swing.JTextField chatHistoryLabel;
     public static javax.swing.JTextField displayUsername;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField komodoLabel;
-    private javax.swing.JTextField komodoLabel1;
-    private javax.swing.JTextField komodoLabel2;
-    public static javax.swing.JTextField messageBar;
-    public javax.swing.JButton sendButton;
+    private javax.swing.JTextField messageBar;
+    private javax.swing.JTextField onlineUsersLabel;
+    private javax.swing.JButton sendButton;
     public static javax.swing.JTextArea userListField;
     // End of variables declaration                   
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
+	}
 }
