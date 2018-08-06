@@ -20,7 +20,6 @@ public class ChatServer {
 
 	static ArrayList<String> userNames = new ArrayList<String>();
 	static ArrayList<User> userArray = new ArrayList<User>();
-	static Vector<ConversationHandler> activeClients = new Vector<>();
 	static InetAddress IP;
 
 	// Assigns PrintWriters to each user that connects to the server, preventing
@@ -28,8 +27,6 @@ public class ChatServer {
 	// PrintWriter objects of all the clients
 	static ArrayList<BufferedWriter> buffWriter = new ArrayList<BufferedWriter>();
 	static ArrayList<userBuffer> userBuffers = new ArrayList<userBuffer>();
-	// client counter
-	static int i = 0;
 
 	public static void main(String[] args) {
 
@@ -48,13 +45,12 @@ public class ChatServer {
 					System.out.println("===============================");
 				}
 
-				ConversationHandler handler = new ConversationHandler(sock, "client" + i);
-				activeClients.add(handler);
+				ConversationHandler handler = new ConversationHandler(sock);
 				handler.start();
-				i++;
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "PLEASE NOTE: Server Terminated, messages will no longer send!");
 		}
 
@@ -69,7 +65,6 @@ class ConversationHandler extends Thread {
 	ObjectInputStream userObjectInput;
 	ObjectOutputStream userObjectOutput;
 	String user;
-	String myName;
 	String ip;
 	User newUser;
 	User toAdd;
@@ -77,9 +72,8 @@ class ConversationHandler extends Thread {
 	static FileWriter fw;
 	static BufferedWriter bw;
 
-	public ConversationHandler(Socket sockySock, String myName) throws IOException {
+	public ConversationHandler(Socket sockySock) throws IOException {
 		this.sockySock = sockySock;
-		this.myName = myName;
 		fw = new FileWriter("./ChatServer-logs.txt", true);
 		bw = new BufferedWriter(fw);
 		msgLogs = new PrintWriter(bw, true);
@@ -156,9 +150,13 @@ class ConversationHandler extends Thread {
 
 					//send to both users...
 					for (userBuffer bu: ChatServer.userBuffers) {
-						System.out.println("In for loop of buffers" + bu.getName());
 						if (bu.getName().equals(privUser)) {
-							bu.getWriter().write(privUser+ ": "+ message);
+							bu.getWriter().write(user + ": "+ message);
+							bu.getWriter().newLine();
+							bu.getWriter().flush();
+						}
+						if (bu.getName().equals(user)) {
+							bu.getWriter().write(user+ ": "+ message);
 							bu.getWriter().newLine();
 							bu.getWriter().flush();
 						}

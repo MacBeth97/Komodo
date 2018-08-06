@@ -53,7 +53,6 @@ public class ChatClient {
 		out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 		userObjectOutput = new ObjectOutputStream(sock.getOutputStream());
 		userObjectInput = new ObjectInputStream(sock.getInputStream());
-		int index = 0;
 
 		// Takes the user input and sends it to the server
 		while (true) {
@@ -108,22 +107,6 @@ public class ChatClient {
 					}
 				}
 
-			} else if (str.startsWith("@")) {
-				//open chat menu if doesn't already exist 
-				//send msg so that it displays on both users
-				// -> find user's chat menu in array 
-				String privMsg = str.substring(1);
-				String[] splitMsg = privMsg.split(":");
-				String privUser = splitMsg[0];
-
-				str = splitMsg[1];
-				
-				for (User toSend : ChatServer.userArray) {
-					if (privUser.equals(toSend.name)) {
-						String privIP = toSend.getIP();
-						Socket temp = new Socket(privIP, 8000);
-					}
-				}
 			}	else {
 				Display.chatField.append(str + "\n");
 			}
