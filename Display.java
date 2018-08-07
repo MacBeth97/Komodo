@@ -1,16 +1,22 @@
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Display extends javax.swing.JFrame implements Observer {
+public class Display extends javax.swing.JFrame implements Observer, WindowListener, WindowFocusListener, WindowStateListener{
 
     /**
      * Creates new form Display
      */
     public Display() {
         initComponents();
-        
+        addWindowListener(this);
     }
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -20,7 +26,6 @@ public class Display extends javax.swing.JFrame implements Observer {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
-
         jScrollBar1 = new javax.swing.JScrollBar();
         jPasswordField1 = new javax.swing.JPasswordField();
         jPanel1 = new javax.swing.JPanel();
@@ -224,6 +229,7 @@ public class Display extends javax.swing.JFrame implements Observer {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Display().setVisible(true);
+                
             }
         });
     }
@@ -243,9 +249,84 @@ public class Display extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton sendButton;
     public static javax.swing.JTextArea userListField;
     // End of variables declaration                   
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		System.out.println("Papaya window closed");
+		System.out.println(ChatServer.getSomeoneHasExited());
+		//ChatServer.someoneHasExited = true;
+		ChatServer.updateSomeoneHasExited(true);
+		String userToRemove = displayUsername.getText();
+		System.out.println("In display " +userToRemove);
+		ChatServer.removeUser(userToRemove);
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+	
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
+	@Override
+	public void windowStateChanged(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void windowGainedFocus(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void windowLostFocus(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
