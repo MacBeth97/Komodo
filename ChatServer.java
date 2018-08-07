@@ -120,7 +120,6 @@ class ConversationHandler extends Thread {
 	static FileWriter fw;
 	static BufferedWriter bw;
 	static Boolean privUserExists = false;
-	static Boolean test = false;
 
 
 	public ConversationHandler(Socket sockySock) throws IOException {
@@ -218,7 +217,6 @@ class ConversationHandler extends Thread {
 				} else {
 					msgLogs.println(user + ": " + message);
 				
-					System.out.println(test + " Finally");
 					
 					for (userBuffer userBuffinski: ChatServer.userBuffers) {
 						try {
