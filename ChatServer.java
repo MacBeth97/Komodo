@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Vector;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.JOptionPane;
 import java.io.BufferedReader;
@@ -29,7 +30,7 @@ public class ChatServer {
 	static ArrayList<BufferedWriter> buffWriter = new ArrayList<BufferedWriter>();
 	static ArrayList<userBuffer> userBuffers = new ArrayList<userBuffer>();
 	public static String userToRemove;
-	public static Boolean someoneHasExited = false;
+	public static boolean someoneHasExited;
 
 	public static void main(String[] args) {
 
@@ -60,25 +61,23 @@ public class ChatServer {
 	}
 	
 	public static void updateSomeoneHasExited(Boolean bool) {
-		someoneHasExited = bool;
+		ChatServer.someoneHasExited = bool;
+//		System.out.println("Updated: " + someoneHasExited);
 	}
 	
 	public static Boolean getSomeoneHasExited() {
-		return someoneHasExited;
+		return ChatServer.someoneHasExited;
 	}
 	public static void removeUser(String user) {
-		System.out.println("In remove");
-		
 		String actualUser = user.substring(22);
-		System.out.println("Entered else");
-		System.out.println("USER IS " +actualUser);
 		
-		System.out.println(ChatServer.userArray.size());
+		System.out.println(ChatServer.someoneHasExited + " Here");
+		ChatServer.someoneHasExited = true;
+		ConversationHandler.test = ChatServer.someoneHasExited;
 		// Remove disconnected user from ArrayList
 		for (User toRemove : ChatServer.userArray) {
 			System.out.println("IN FOR: " + toRemove.name);
 			if (toRemove.name.equals(actualUser)) {
-				System.out.println("Name: " + actualUser);
 				(ChatServer.userArray).remove(toRemove);
 				(ChatClient.userArray).remove(toRemove);
 				ChatServer.userNames.remove(actualUser);
@@ -101,6 +100,7 @@ public class ChatServer {
 			}
 		}
 		JOptionPane.showMessageDialog(null, "Connection Terminated by User: " + actualUser + "\n");
+		ChatServer.someoneHasExited = true;
 		System.out.println("Connection Terminated by User: " + actualUser);
 	}
 
@@ -120,6 +120,7 @@ class ConversationHandler extends Thread {
 	static FileWriter fw;
 	static BufferedWriter bw;
 	static Boolean privUserExists = false;
+	static Boolean test = false;
 
 
 	public ConversationHandler(Socket sockySock) throws IOException {
@@ -187,7 +188,6 @@ class ConversationHandler extends Thread {
 				}
 
 				if (message.startsWith("@")) {
-					System.out.println("in if");
 					String privMsg = message.substring(1);
 					String[] splitMsg = privMsg.split(":");
 					String privUser = splitMsg[0];
@@ -217,23 +217,21 @@ class ConversationHandler extends Thread {
 					}
 				} else {
 					msgLogs.println(user + ": " + message);
-//					for (BufferedWriter writer : ChatServer.buffWriter) {
-//						writer.write(user + ": " + message);
-//						writer.newLine();
-//						writer.flush();
-//					}
-					System.out.println(ChatClient.someoneExited);
 				
+					System.out.println(test + " Finally");
+					
 					for (userBuffer userBuffinski: ChatServer.userBuffers) {
-						userBuffinski.getWriter().write(user + ": " + message);
-						System.out.println("user: " + userBuffinski.getName());
-						userBuffinski.getWriter().newLine();
-						userBuffinski.getWriter().flush();
+						try {
+							userBuffinski.getWriter().write(user + ": " + message);
+							userBuffinski.getWriter().newLine();
+							userBuffinski.getWriter().flush();
+						} catch (Exception e) {
+
+						}
 					}
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			
 		}
 	}
