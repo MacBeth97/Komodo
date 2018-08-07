@@ -73,7 +73,7 @@ public class ChatServer {
 		
 		System.out.println(ChatServer.someoneHasExited + " Here");
 		ChatServer.someoneHasExited = true;
-		ConversationHandler.test = ChatServer.someoneHasExited;
+		
 		// Remove disconnected user from ArrayList
 		for (User toRemove : ChatServer.userArray) {
 			System.out.println("IN FOR: " + toRemove.name);
