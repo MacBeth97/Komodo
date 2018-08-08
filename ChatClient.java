@@ -112,6 +112,7 @@ public class ChatClient {
 					int i = str.indexOf("&");
 					String userToRemove = str.substring(0, i-1);
 					System.out.println("ChatClient " + userToRemove);
+					
 					out.write("&" + userToRemove);
 					out.newLine();
 					out.flush();

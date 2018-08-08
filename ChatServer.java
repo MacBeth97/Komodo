@@ -171,10 +171,10 @@ class ConversationHandler extends Thread {
 			userBuffer ub = new userBuffer(user, out);
 			ChatServer.userBuffers.add(ub);
 						
-			for (BufferedWriter writer : ChatServer.buffWriter) {
-				writer.write("update" + ChatServer.userNames);
-				writer.newLine();
-				writer.flush();
+			for (userBuffer ubu : ChatServer.userBuffers) {
+				ubu.getWriter().write("update" + ChatServer.userNames);
+				ubu.getWriter().newLine();
+				ubu.getWriter().flush();
 			}
 
 			// Reads message from a client and sends to all other clients
@@ -214,21 +214,34 @@ class ConversationHandler extends Thread {
 						}
 					}
 				} else if(message.startsWith("&")) {
-					System.out.println("IN SERVER: " + message.substring(1, message.length()));
-					String actualUser = message.substring(1, message.length());
+					//System.out.println("IN SERVER: " + message.substring(1, message.length()));
+					String actualUser = message.substring(1, message.length()).trim();
 					for (User toRemove : ChatServer.userArray) {
-						System.out.println("IN FOR: " + toRemove.name);
-						if (toRemove.name.equals(actualUser)) {
+						//System.out.println("IN FOR: " + toRemove.getName());
+						//System.out.println("acut " + actualUser);
+						String newName = toRemove.getName().trim();
+						if (newName.equals(actualUser)){
 							ChatServer.userArray.remove(toRemove);
 							(ChatClient.userArray).remove(toRemove);
 							ChatServer.userNames.remove(actualUser);
-							System.out.println("REMOVED");
+							//System.out.println("REMOVED");
 							break;
 						}
 					}
-					for (User user: ChatServer.userArray) {
-						System.out.println("2nd for: " + user.name);
+					
+					for (userBuffer userBuff: ChatServer.userBuffers) {
+						if (userBuff.getName().trim().equals(actualUser)) {
+							ChatServer.userBuffers.remove(userBuff);
+							//System.out.println("Removed buffer");
+							break;
+						}
 					}
+					for (userBuffer ubu : ChatServer.userBuffers) {
+						ubu.getWriter().write("update" + ChatServer.userNames);
+						ubu.getWriter().newLine();
+						ubu.getWriter().flush();
+					}
+				
 				} else {
 					msgLogs.println(user + ": " + message);
 				

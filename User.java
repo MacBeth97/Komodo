@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public String name;
+	String name;
 	public String ipAddress; 
 	
 	public User(String name, String ipAddress) {
@@ -15,8 +15,8 @@ public class User implements Serializable {
 		return this.ipAddress;
 	}
 	
-//	public privateChat getMenu() {
-//		
-//	}
+	public String getName() {
+		return this.name;
+	}
 }
 
