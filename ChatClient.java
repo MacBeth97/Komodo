@@ -62,7 +62,6 @@ public class ChatClient {
 			// Takes the user input and sends it to the server
 			while (true) {
 				String str = in.readLine();
-				System.out.println("STR: " + str);
 				if (str.startsWith("Name is Required!")) {
 					user = JOptionPane.showInputDialog(null, "Enter a unique Name:", "Name Required!",
 							JOptionPane.PLAIN_MESSAGE);

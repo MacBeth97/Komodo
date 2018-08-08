@@ -17,7 +17,6 @@ public class Display extends javax.swing.JFrame implements Observer, WindowListe
     }
 
 
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,6 +25,7 @@ public class Display extends javax.swing.JFrame implements Observer, WindowListe
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
+
         jScrollBar1 = new javax.swing.JScrollBar();
         jPasswordField1 = new javax.swing.JPasswordField();
         jPanel1 = new javax.swing.JPanel();
@@ -39,6 +39,9 @@ public class Display extends javax.swing.JFrame implements Observer, WindowListe
         chatHistoryLabel = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         displayUsername = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         jPasswordField1.setText("jPasswordField1");
 
@@ -66,6 +69,7 @@ public class Display extends javax.swing.JFrame implements Observer, WindowListe
         chatField.setEditable(false);
         chatField.setColumns(20);
         chatField.setRows(5);
+        chatField.setPreferredSize(new java.awt.Dimension(220, 80));
         jScrollPane1.setViewportView(chatField);
 
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -99,57 +103,83 @@ public class Display extends javax.swing.JFrame implements Observer, WindowListe
             }
         });
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("./FINALKOMLOGOEVER.png")); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon("/Users/admin/Documents/GitHub/Komodo/FINALKOMLOGOEVER.png")); // NOI18N
 
         displayUsername.setEditable(false);
-        displayUsername.setBackground(new java.awt.Color(118, 211, 180));
+        displayUsername.setBackground(new java.awt.Color(115, 201, 177));
         displayUsername.setFont(new java.awt.Font("Calibri", 2, 16)); // NOI18N
         displayUsername.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        displayUsername.setText("");
+        displayUsername.setText("You are now logged in as:");
         displayUsername.setBorder(null);
         displayUsername.setOpaque(true);
+
+        jLabel2.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
+        jLabel2.setText("Private Message: ");
+
+        jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane3.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        jScrollPane3.setFont(new java.awt.Font("Calibri", 0, 10)); // NOI18N
+
+        jTextArea1.setEditable(false);
+        jTextArea1.setBackground(new java.awt.Color(175, 238, 213));
+        jTextArea1.setColumns(20);
+        jTextArea1.setLineWrap(true);
+        jTextArea1.setRows(5);
+        jTextArea1.setText("To send privately\n  use the format: \n    @user: msg ");
+        jTextArea1.setBorder(null);
+        jScrollPane3.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(onlineUsersLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(55, 55, 55)
-                        .addComponent(chatHistoryLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
+                        .addComponent(messageBar, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sendButton))
+                    .addComponent(displayUsername, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(messageBar, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(sendButton))
+                                .addComponent(onlineUsersLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(57, 57, 57)
+                                .addComponent(chatHistoryLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(displayUsername, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(33, 33, 33)))))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chatHistoryLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(onlineUsersLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
-                .addGap(21, 21, 21)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1))
+                .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(messageBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(sendButton))
@@ -161,11 +191,11 @@ public class Display extends javax.swing.JFrame implements Observer, WindowListe
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -189,14 +219,30 @@ public class Display extends javax.swing.JFrame implements Observer, WindowListe
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
         messageBar.setText("");
 
     }                                          
 
     private void messageBarActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
-    }                                          
+    }    
+    
+    @Override
+	public void windowClosing(WindowEvent e) {
+		ChatServer.updateSomeoneHasExited(true);
+		try {
+			ChatClient.out.write("&" + displayUsername.getText().substring(22));
+			ChatClient.out.newLine();
+			ChatClient.out.flush();
+			
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		String userToRemove = displayUsername.getText();
+		ChatServer.removeUser(userToRemove);
+		
+	}
 
     /**
      * @param args the command line arguments
@@ -229,16 +275,14 @@ public class Display extends javax.swing.JFrame implements Observer, WindowListe
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Display().setVisible(true);
-                
             }
         });
     }
-
-    // Variables declaration - do not modify                     
     public static javax.swing.JTextArea chatField;
     public static javax.swing.JTextField chatHistoryLabel;
     public static javax.swing.JTextField displayUsername;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollBar jScrollBar1;
@@ -248,80 +292,14 @@ public class Display extends javax.swing.JFrame implements Observer, WindowListe
     private javax.swing.JTextField onlineUsersLabel;
     private javax.swing.JButton sendButton;
     public static javax.swing.JTextArea userListField;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration                   
-
-	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
-		//System.out.println("Papaya window closed");
-		//System.out.println(ChatServer.getSomeoneHasExited());
-		//ChatServer.someoneHasExited = true;
-		ChatServer.updateSomeoneHasExited(true);
-		try {
-			ChatClient.out.write("&" + displayUsername.getText().substring(22));
-			ChatClient.out.newLine();
-			ChatClient.out.flush();
-			
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		String userToRemove = displayUsername.getText();
-		//System.out.println("In display " +userToRemove);
-		ChatServer.removeUser(userToRemove);
-		
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-	
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
 	@Override
 	public void windowStateChanged(WindowEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
-
 
 
 	@Override
@@ -331,11 +309,58 @@ public class Display extends javax.swing.JFrame implements Observer, WindowListe
 	}
 
 
-
 	@Override
 	public void windowLostFocus(WindowEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
+	}
 }
