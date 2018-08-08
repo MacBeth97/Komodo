@@ -31,10 +31,11 @@ public class ChatClient {
 	static String user;
 	static Boolean someoneLeft = false;
 	static Boolean someoneExited = false;
+	public static Boolean gone;
 
 	public static void main(String[] args) {
 		try {
-
+			gone = false;
 			startTheChat();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "PLEASE NOTE: Server Terminated, messages will no longer send!");
@@ -60,11 +61,8 @@ public class ChatClient {
 
 			// Takes the user input and sends it to the server
 			while (true) {
-				if (someoneExited == true) {
-					System.out.println("PAPAYA");
-					someoneExited = false;
-				}
 				String str = in.readLine();
+				System.out.println("STR: " + str);
 				if (str.startsWith("Name is Required!")) {
 					user = JOptionPane.showInputDialog(null, "Enter a unique Name:", "Name Required!",
 							JOptionPane.PLAIN_MESSAGE);
@@ -109,6 +107,15 @@ public class ChatClient {
 							Display.userListField.append(name + "\n");
 						}
 					}
+				} else if(str.contains("&")) {
+					System.out.println("Here");
+					int i = str.indexOf("&");
+					String userToRemove = str.substring(0, i-1);
+					System.out.println("ChatClient " + userToRemove);
+					out.write("&" + userToRemove);
+					out.newLine();
+					out.flush();
+					//Send back msg with "to remove" to chat server
 				} else {
 					Display.chatField.append(str + "\n");
 				}

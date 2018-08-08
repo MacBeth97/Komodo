@@ -71,7 +71,6 @@ public class ChatServer {
 	public static void removeUser(String user) {
 		String actualUser = user.substring(22);
 		
-		System.out.println(ChatServer.someoneHasExited + " Here");
 		ChatServer.someoneHasExited = true;
 		
 		// Remove disconnected user from ArrayList
@@ -213,6 +212,22 @@ class ConversationHandler extends Thread {
 							}
 							
 						}
+					}
+				} else if(message.startsWith("&")) {
+					System.out.println("IN SERVER: " + message.substring(1, message.length()));
+					String actualUser = message.substring(1, message.length());
+					for (User toRemove : ChatServer.userArray) {
+						System.out.println("IN FOR: " + toRemove.name);
+						if (toRemove.name.equals(actualUser)) {
+							ChatServer.userArray.remove(toRemove);
+							(ChatClient.userArray).remove(toRemove);
+							ChatServer.userNames.remove(actualUser);
+							System.out.println("REMOVED");
+							break;
+						}
+					}
+					for (User user: ChatServer.userArray) {
+						System.out.println("2nd for: " + user.name);
 					}
 				} else {
 					msgLogs.println(user + ": " + message);

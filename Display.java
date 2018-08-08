@@ -259,12 +259,21 @@ public class Display extends javax.swing.JFrame implements Observer, WindowListe
 	@Override
 	public void windowClosing(WindowEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("Papaya window closed");
-		System.out.println(ChatServer.getSomeoneHasExited());
+		//System.out.println("Papaya window closed");
+		//System.out.println(ChatServer.getSomeoneHasExited());
 		//ChatServer.someoneHasExited = true;
 		ChatServer.updateSomeoneHasExited(true);
+		try {
+			ChatClient.out.write("&" + displayUsername.getText().substring(22));
+			ChatClient.out.newLine();
+			ChatClient.out.flush();
+			
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		String userToRemove = displayUsername.getText();
-		System.out.println("In display " +userToRemove);
+		//System.out.println("In display " +userToRemove);
 		ChatServer.removeUser(userToRemove);
 		
 	}
